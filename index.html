@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>MAHIM DARK SERVER</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Rajdhani:wght@600&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body,html{
+height:100%;
+width:100%;
+background:#000;
+overflow:hidden;
+font-family:'Rajdhani',sans-serif;
+color:#fff;
+}
+
+.container{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+z-index:9999;
+display:flex;
+flex-direction:column;
+align-items:center;
+padding-top:20px;
+}
+
+#matrix{
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:100%;
+z-index:1;
+opacity:0.3;
+pointer-events:none;
+}
+
+.content{
+position:relative;
+z-index:2;
+width:90%;
+max-width:380px;
+text-align:center;
+}
+
+/* HEADER */
+
+.header h1{
+font-family:'Orbitron',sans-serif;
+font-size:38px;
+color:#ff1a1a;
+text-shadow:
+0 0 10px #ff0000,
+0 0 20px #ff0000,
+0 0 40px #ff0000;
+letter-spacing:2px;
+margin-bottom:8px;
+}
+
+.header p{
+font-size:18px;
+color:#ff9999;
+margin-top:5px;
+}
+
+/* LOGIN PAGE */
+
+.login-box{
+margin:40px 0;
+padding:25px;
+background:rgba(30,0,0,0.82);
+border:2px solid #ff3333;
+border-radius:22px;
+box-shadow:
+0 0 25px rgba(255,0,0,0.6),
+inset 0 0 15px rgba(255,0,0,0.2);
+}
+
+.login-box input{
+width:100%;
+padding:18px;
+margin:12px 0;
+border:none;
+border-radius:14px;
+background:rgba(255,50,50,0.15);
+color:#fff;
+font-size:18px;
+text-align:center;
+outline:none;
+}
+
+.login-box input:focus{
+background:rgba(255,50,50,0.28);
+box-shadow:0 0 15px #ff0000;
+}
+
+.login-box button{
+width:100%;
+padding:17px;
+margin:12px 0;
+border:none;
+border-radius:14px;
+font-weight:bold;
+font-size:19px;
+cursor:pointer;
+transition:0.3s;
+}
+
+.unlock-btn{
+background:linear-gradient(45deg,#ff0055,#ff4444);
+color:#fff;
+box-shadow:0 0 18px rgba(255,0,0,0.5);
+}
+
+.unlock-btn:hover{
+transform:scale(1.03);
+}
+
+.getkey-btn{
+background:#b30000;
+color:#fff;
+}
+
+.getkey-btn:hover{
+background:#ff1744;
+}
+
+/* MAIN PANEL */
+
+.main{
+display:none;
+margin-top:20px;
+width:100%;
+}
+
+.live-time{
+font-family:'Orbitron',sans-serif;
+font-size:24px;
+color:#ffcccc;
+letter-spacing:2px;
+margin-bottom:15px;
+text-shadow:0 0 10px #ff0000;
+}
+
+.timer-circle{
+width:110px;
+height:110px;
+margin:20px auto;
+position:relative;
+border:5px solid #ff3333;
+border-radius:50%;
+box-shadow:0 0 25px rgba(255,0,0,0.7);
+background:
+conic-gradient(
+#ff1744 calc(var(--progress) * 1%),
+#1a0000 calc(var(--progress) * 1%)
+);
+}
+
+.timer-circle::before{
+content:attr(data-time);
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+font-family:'Orbitron',sans-serif;
+font-size:28px;
+font-weight:900;
+color:#fff;
+text-shadow:0 0 12px #ff0000;
+}
+
+/* SIGNAL BOX */
+
+.signal-box{
+margin:20px auto;
+padding:25px;
+background:rgba(139,0,0,0.45);
+border:2px solid #ff3333;
+border-radius:22px;
+box-shadow:
+0 0 30px rgba(255,0,0,0.7),
+inset 0 0 18px rgba(255,0,0,0.3);
+width:100%;
+max-width:350px;
+}
+
+.signal-text{
+font-family:'Orbitron',sans-serif;
+font-size:58px;
+font-weight:900;
+color:#ff1a1a;
+text-shadow:0 0 18px #ff0000;
+margin:15px 0;
+}
+
+.numbers{
+font-size:44px;
+font-weight:bold;
+color:#fff;
+padding:12px 28px;
+background:#8B0000;
+border-radius:16px;
+display:inline-block;
+border:2px solid #ff3333;
+box-shadow:0 0 18px rgba(255,0,0,0.6);
+}
+
+/* HISTORY BOX */
+
+.history-box{
+margin:25px auto;
+width:100%;
+max-width:350px;
+max-height:220px;
+overflow-y:auto;
+border:2px solid #ff3333;
+border-radius:18px;
+background:rgba(20,0,0,0.6);
+box-shadow:
+0 0 20px rgba(255,0,0,0.5),
+inset 0 0 12px rgba(255,0,0,0.3);
+}
+
+.history-box table{
+width:100%;
+border-collapse:collapse;
+color:#ffb3b3;
+font-size:15px;
+}
+
+.history-box th{
+background:#8B0000;
+color:#fff;
+padding:14px 8px;
+font-weight:bold;
+position:sticky;
+top:0;
+z-index:10;
+text-shadow:0 0 6px #ff0000;
+border-bottom:2px solid #ff3333;
+}
+
+.history-box td{
+padding:12px 6px;
+text-align:center;
+border-bottom:1px solid rgba(255,0,0,0.3);
+}
+
+.history-box tr:hover td{
+background:rgba(139,0,0,0.3);
+}
+
+/* TELEGRAM BUTTON */
+
+.channel-btn{
+margin:30px auto 25px;
+padding:16px 35px;
+background:linear-gradient(45deg,#ff0055,#ff5252);
+color:#fff;
+text-decoration:none;
+border-radius:16px;
+font-weight:bold;
+font-size:19px;
+box-shadow:0 0 22px rgba(255,0,0,0.6);
+display:inline-block;
+transition:0.3s;
+}
+
+.channel-btn:hover{
+transform:scale(1.08);
+box-shadow:0 0 30px #ff0000;
+}
+
+#error{
+color:#ff6666;
+margin-top:10px;
+font-size:14px;
+}
+
+/* MOBILE */
+
+@media (max-width:480px){
+
+.header h1{
+font-size:32px;
+}
+
+.signal-text{
+font-size:48px;
+}
+
+.numbers{
+font-size:38px;
+}
+
+.timer-circle{
+width:90px;
+height:90px;
+}
+
+.timer-circle::before{
+font-size:22px;
+}
+
+.history-box th,
+.history-box td{
+font-size:14px;
+padding:8px 4px;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<canvas id="matrix"></canvas>
+
+<div class="content">
+
+<!-- HEADER -->
+
+<div class="header">
+<h1>MAHIM DARK SERVER</h1>
+<p>WINGO 30S FREE SERVER</p>
+</div>
+
+<!-- LOGIN PAGE -->
+
+<div class="login-box" id="loginBox">
+
+<input type="password"
+id="passInput"
+placeholder="Enter Access Key">
+
+<button class="unlock-btn"
+onclick="unlock()">
+UNLOCK PANEL
+</button>
+
+<button class="getkey-btn"
+onclick="window.open('https://t.me/LEADER_MAHIM_VIP_ADMIN')">
+GET KEY
+</button>
+
+<div id="error"></div>
+
+</div>
+
+<!-- MAIN PANEL -->
+
+<div class="main" id="mainPanel">
+
+<div class="header">
+<h1>MAHIM DARK SERVER</h1>
+<p>WINGO 30S FREE SERVER</p>
+</div>
+
+<div class="live-time" id="liveTime">
+--:--:--
+</div>
+
+<div class="timer-circle"
+id="timerCircle"
+data-time="00:30"
+style="--progress:0%;">
+</div>
+
+<div class="signal-box">
+
+<div class="signal-text" id="signal">
+WAIT...
+</div>
+
+<div class="numbers" id="nums">
+-- --
+</div>
+
+</div>
+
+<!-- HISTORY -->
+
+<div class="history-box">
+
+<table id="historyTable">
+
+<thead>
+<tr>
+<th>TIME</th>
+<th>SIGNAL</th>
+<th>NUMBERS</th>
+</tr>
+</thead>
+
+<tbody></tbody>
+
+</table>
+
+</div>
+
+<!-- TELEGRAM -->
+
+<a href="https://t.me/vipteamfreehack_moods"
+target="_blank"
+class="channel-btn">
+Join Telegram Channel
+</a>
+
+</div>
+</div>
+</div>
+
+<script>
+
+/* MATRIX EFFECT */
+
+const canvas = document.getElementById('matrix');
+const ctx = canvas.getContext('2d');
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+const chars = '01红火烈光电心';
+const fontSize = 16;
+const columns = canvas.width / fontSize;
+const drops = Array(Math.floor(columns)).fill(1);
+
+function draw(){
+
+ctx.fillStyle = 'rgba(0,0,0,0.05)';
+ctx.fillRect(0,0,canvas.width,canvas.height);
+
+ctx.fillStyle = '#ff1a1a';
+ctx.font = fontSize + 'px monospace';
+
+for(let i=0;i<drops.length;i++){
+
+const text =
+chars[Math.floor(Math.random()*chars.length)];
+
+ctx.fillText(text,i*fontSize,drops[i]*fontSize);
+
+if(
+drops[i]*fontSize > canvas.height &&
+Math.random() > 0.975
+){
+drops[i]=0;
+}
+
+drops[i]++;
+
+}
+
+}
+
+setInterval(draw,50);
+
+/* LOGIN */
+
+function unlock(){
+
+const key =
+document.getElementById('passInput').value;
+
+if(key === 'PANEL123'){
+
+document.getElementById('loginBox').style.display='none';
+
+document.getElementById('mainPanel').style.display='block';
+
+startAfterLogin();
+
+}else{
+
+document.getElementById('error').innerText =
+'Wrong Key!';
+
+setTimeout(()=>{
+document.getElementById('error').innerText='';
+},2000);
+
+}
+
+}
+
+/* START */
+
+function startAfterLogin(){
+
+updateLiveTime();
+
+setInterval(updateLiveTime,1000);
+
+startEternalTimer();
+
+}
+
+/* LIVE CLOCK */
+
+function updateLiveTime(){
+
+const now = new Date();
+
+document.getElementById('liveTime').textContent =
+now.toLocaleTimeString('en-US',{hour12:false});
+
+}
+
+/* TIMER */
+
+let timerInterval;
+
+function startEternalTimer(){
+
+const now = new Date();
+
+const seconds = now.getSeconds();
+
+const ms = now.getMilliseconds();
+
+const next30 = seconds < 30 ? 30 : 60;
+
+const delayToNext =
+(next30 - seconds) * 1000 - ms;
+
+startCountdown(next30 - seconds);
+
+setTimeout(()=>{
+
+generateSignal();
+
+startCountdown(30);
+
+timerInterval = setInterval(()=>{
+
+generateSignal();
+
+startCountdown(30);
+
+},30000);
+
+},delayToNext);
+
+}
+
+function startCountdown(seconds){
+
+let count = seconds;
+
+const circle =
+document.getElementById('timerCircle');
+
+clearInterval(window.countdownInterval);
+
+window.countdownInterval = setInterval(()=>{
+
+count--;
+
+const secStr =
+String(count).padStart(2,'0');
+
+circle.setAttribute(
+'data-time',
+`00:${secStr}`
+);
+
+const progress =
+((seconds-count)/seconds)*100;
+
+circle.style.setProperty(
+'--progress',
+progress + '%'
+);
+
+if(count <= 0){
+clearInterval(window.countdownInterval);
+}
+
+},1000);
+
+const secStr =
+String(count).padStart(2,'0');
+
+circle.setAttribute(
+'data-time',
+`00:${secStr}`
+);
+
+circle.style.setProperty('--progress','0%');
+
+}
+
+/* SIGNAL */
+
+function generateSignal(){
+
+const now = new Date();
+
+const timeStr =
+now.toLocaleTimeString('en-US',{hour12:false});
+
+const isBig = Math.random() < 0.5;
+
+const sig = isBig ? "BIG" : "SMALL";
+
+const nums = isBig
+? getTwo(5,9)
+: getTwo(0,4);
+
+document.getElementById('signal').textContent = sig;
+
+document.getElementById('nums').textContent =
+nums[0] + " " + nums[1];
+
+const tbody =
+document.querySelector('#historyTable tbody');
+
+const newRow = `
+<tr>
+<td>${timeStr}</td>
+<td>${sig}</td>
+<td>${nums[0]} ${nums[1]}</td>
+</tr>
+`;
+
+tbody.insertAdjacentHTML('afterbegin',newRow);
+
+while(tbody.rows.length > 10){
+tbody.deleteRow(tbody.rows.length - 1);
+}
+
+}
+
+function getTwo(min,max){
+
+let a =
+Math.floor(Math.random()*(max-min+1))+min;
+
+let b;
+
+do{
+b =
+Math.floor(Math.random()*(max-min+1))+min;
+}
+while(a===b);
+
+return [a,b];
+
+}
+
+</script>
+
+</body>
+  </html>
